@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gold: #B8860B;
+  --gold-light: #D4A843;
+  --gold-dark: #8B6914;
+  --cream: #FAF3E0;
+  --cream-dark: #F0E6CC;
+  --sage: #7C8C6E;
+  --sage-light: #9AAB8C;
+  --charcoal: #2C2C2C;
+  --warm-white: #FEFCF6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--warm-white);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-light);
+  border-radius: 3px;
+}
+
+/* Ornament divider */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(
+    to var(--direction, right),
+    var(--gold-light),
+    transparent
+  );
+}
+
+.ornament-divider::before {
+  --direction: right;
+}
+
+.ornament-divider::after {
+  --direction: left;
+}
+
+/* Floating particles */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: fixed;
+  pointer-events: none;
+  animation: float linear infinite;
+}
+
+/* Cover slide up */
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.cover-exit {
+  animation: slideUp 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Countdown glow */
+.countdown-box {
+  background: linear-gradient(
+    135deg,
+    rgba(184, 134, 11, 0.1),
+    rgba(184, 134, 11, 0.05)
+  );
+  border: 1px solid rgba(184, 134, 11, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Gallery hover */
+.gallery-item {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+/* Music button pulse */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.music-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-light);
+  animation: pulse-ring 2s ease-out infinite;
 }
