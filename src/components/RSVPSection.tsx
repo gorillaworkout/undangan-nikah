@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Send, CheckCircle } from "lucide-react";
 
-export default function RSVPSection({ groomName, brideName }: { groomName: string; brideName: string }) {
+export default function RSVPSection({ groomName, brideName, invitationId }: { groomName: string; brideName: string; invitationId?: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const [submitted, setSubmitted] = useState(false);
@@ -25,7 +25,7 @@ export default function RSVPSection({ groomName, brideName }: { groomName: strin
       const res = await fetch("/api/rsvp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, invitation_id: invitationId }),
       });
 
       if (res.ok) {
