@@ -1,21 +1,73 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+
+interface ParticleData {
+  id: number;
+  x: number;
+  size: number;
+  delay: number;
+  duration: number;
+  opacity: number;
+  type: "circle" | "diamond" | "star";
+}
 
 export default function Particles() {
-  const [particles, setParticles] = useState<
-    { id: number; x: number; size: number; delay: number; duration: number }[]
-  >([]);
+  const [particles, setParticles] = useState<ParticleData[]>([]);
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 15 }, (_, i) => ({
+    const types: ParticleData["type"][] = ["circle", "diamond", "star"];
+    const newParticles: ParticleData[] = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
-      size: Math.random() * 6 + 2,
-      delay: Math.random() * 10,
-      duration: Math.random() * 15 + 10,
+      size: Math.random() * 5 + 2,
+      delay: Math.random() * 15,
+      duration: Math.random() * 20 + 15,
+      opacity: Math.random() * 0.3 + 0.1,
+      type: types[Math.floor(Math.random() * types.length)],
     }));
     setParticles(newParticles);
+  }, []);
+
+  const renderShape = useCallback((type: ParticleData["type"], size: number) => {
+    switch (type) {
+      case "diamond":
+        return (
+          <div
+            style={{
+              width: size,
+              height: size,
+              transform: "rotate(45deg)",
+              background: "var(--gold-light)",
+            }}
+          />
+        );
+      case "star":
+        return (
+          <div
+            style={{
+              width: size * 1.5,
+              height: size * 1.5,
+              fontSize: size * 1.5,
+              lineHeight: 1,
+              color: "var(--gold-light)",
+            }}
+          >
+            ✦
+          </div>
+        );
+      default:
+        return (
+          <div
+            style={{
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              background: `radial-gradient(circle, var(--gold-light), transparent)`,
+            }}
+          />
+        );
+    }
   }, []);
 
   return (
@@ -26,16 +78,14 @@ export default function Particles() {
           className="particle"
           style={{
             left: `${p.x}%`,
-            bottom: `-${p.size}px`,
-            width: `${p.size}px`,
-            height: `${p.size}px`,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, var(--gold-light), transparent)`,
-            opacity: 0.4,
+            bottom: `-${p.size * 2}px`,
+            opacity: p.opacity,
             animationDelay: `${p.delay}s`,
             animationDuration: `${p.duration}s`,
           }}
-        />
+        >
+          {renderShape(p.type, p.size)}
+        </div>
       ))}
     </div>
   );

@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import dynamic from "next/dynamic";
+
+const Scene3D = dynamic(() => import("./Scene3D"), { ssr: false });
 
 function getTimeLeft(targetDate: string) {
   const diff = new Date(targetDate).getTime() - Date.now();
@@ -15,16 +18,33 @@ function getTimeLeft(targetDate: string) {
   };
 }
 
-function CountdownBox({ value, label }: { value: number; label: string }) {
+function CountdownBox({
+  value,
+  label,
+  index,
+}: {
+  value: number;
+  label: string;
+  index: number;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
   return (
-    <div className="countdown-box rounded-xl px-4 py-5 text-center min-w-[80px]">
-      <p className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl text-[var(--gold)]">
+    <motion.div
+      ref={ref}
+      className="countdown-box rounded-2xl px-5 py-6 text-center min-w-[75px] sm:min-w-[90px]"
+      initial={{ opacity: 0, y: 30, rotateX: 45 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+    >
+      <p className="font-[family-name:var(--font-playfair)] text-3xl sm:text-5xl text-[var(--gold)] tabular-nums">
         {String(value).padStart(2, "0")}
       </p>
-      <p className="font-[family-name:var(--font-cormorant)] mt-1 text-xs tracking-[0.2em] uppercase text-[var(--charcoal)]/50">
+      <p className="font-[family-name:var(--font-cormorant)] mt-2 text-[10px] sm:text-xs tracking-[0.25em] uppercase text-[var(--charcoal)]/40">
         {label}
       </p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -39,8 +59,11 @@ export default function CountdownSection({ date }: { date: string }) {
   }, [date]);
 
   return (
-    <section ref={ref} className="relative py-24 bg-[var(--cream)]">
-      <div className="mx-auto max-w-xl px-6 text-center">
+    <section ref={ref} className="relative py-28 bg-[var(--cream)] overflow-hidden">
+      {/* 3D background */}
+      <Scene3D variant="floating" />
+
+      <div className="relative z-10 mx-auto max-w-xl px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -49,16 +72,25 @@ export default function CountdownSection({ date }: { date: string }) {
           <p className="font-[family-name:var(--font-cormorant)] text-sm tracking-[0.4em] uppercase text-[var(--sage)]">
             Menghitung Hari
           </p>
-          <div className="ornament-divider mt-4 mb-10">
+          <div className="ornament-divider mt-4 mb-12">
             <span className="text-[var(--gold)] text-xs">✦</span>
           </div>
 
-          <div className="flex justify-center gap-3 sm:gap-4">
-            <CountdownBox value={time.days} label="Hari" />
-            <CountdownBox value={time.hours} label="Jam" />
-            <CountdownBox value={time.minutes} label="Menit" />
-            <CountdownBox value={time.seconds} label="Detik" />
+          <div className="flex justify-center gap-3 sm:gap-5">
+            <CountdownBox value={time.days} label="Hari" index={0} />
+            <CountdownBox value={time.hours} label="Jam" index={1} />
+            <CountdownBox value={time.minutes} label="Menit" index={2} />
+            <CountdownBox value={time.seconds} label="Detik" index={3} />
           </div>
+
+          <motion.p
+            className="font-[family-name:var(--font-lora)] mt-10 text-sm text-[var(--charcoal)]/50 italic"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.6 }}
+          >
+            Kami menantikan kehadiran Anda ❤️
+          </motion.p>
         </motion.div>
       </div>
     </section>

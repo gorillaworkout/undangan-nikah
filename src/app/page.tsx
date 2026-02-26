@@ -23,18 +23,21 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const to = params.get("to");
-    if (to) setGuestName(to);
+    if (to) setGuestName(decodeURIComponent(to));
   }, []);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
+    // Scroll to top when opening
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   return (
     <main className="relative min-h-screen">
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {!isOpen && (
           <Cover
+            key="cover"
             groomName={config.groom.name}
             brideName={config.bride.name}
             guestName={guestName}
