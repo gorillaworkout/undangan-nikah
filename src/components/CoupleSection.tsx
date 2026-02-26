@@ -26,29 +26,31 @@ function PersonCard({ person, index }: { person: PersonInfo; index: number }) {
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, delay: index * 0.3 }}
     >
-      {/* Profile photo placeholder with elegant border */}
       <motion.div
         className="relative mb-8"
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
         <div className="relative h-52 w-52 sm:h-56 sm:w-56">
-          {/* Rotating border */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{
-              background: `conic-gradient(from 0deg, var(--gold-light), transparent, var(--gold-light), transparent, var(--gold-light))`,
+              background: `conic-gradient(from 0deg, var(--primary-light), transparent, var(--primary-light), transparent, var(--primary-light))`,
               padding: 2,
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           >
-            <div className="h-full w-full rounded-full bg-[var(--cream)]" />
+            <div className="h-full w-full rounded-full" style={{ backgroundColor: "var(--bg-alt)" }} />
           </motion.div>
 
-          {/* Inner circle */}
-          <div className="absolute inset-2 overflow-hidden rounded-full bg-gradient-to-br from-[var(--cream)] to-[var(--cream-dark)] flex items-center justify-center">
-            <span className="font-[family-name:var(--font-playfair)] text-5xl text-[var(--gold-light)]/40 italic">
+          <div
+            className="absolute inset-2 overflow-hidden rounded-full flex items-center justify-center"
+            style={{
+              background: `linear-gradient(135deg, var(--bg-alt), var(--bg-dark))`,
+            }}
+          >
+            <span className="font-[family-name:var(--font-playfair)] text-5xl italic" style={{ color: "var(--primary-light)", opacity: 0.4 }}>
               {person.name.charAt(0)}
             </span>
           </div>
@@ -56,7 +58,8 @@ function PersonCard({ person, index }: { person: PersonInfo; index: number }) {
       </motion.div>
 
       <motion.h3
-        className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl text-[var(--charcoal)] italic"
+        className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl italic"
+        style={{ color: "var(--text)" }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: index * 0.3 + 0.4 }}
@@ -70,16 +73,16 @@ function PersonCard({ person, index }: { person: PersonInfo; index: number }) {
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: index * 0.3 + 0.6 }}
       >
-        <p className="font-[family-name:var(--font-cormorant)] text-sm text-[var(--charcoal)]/50">
+        <p className="font-[family-name:var(--font-cormorant)] text-sm" style={{ color: "var(--text)", opacity: 0.5 }}>
           {person.childOrder} dari
         </p>
-        <p className="font-[family-name:var(--font-lora)] text-sm text-[var(--charcoal)]/80">
+        <p className="font-[family-name:var(--font-lora)] text-sm" style={{ color: "var(--text)", opacity: 0.8 }}>
           {person.father}
         </p>
-        <p className="font-[family-name:var(--font-cormorant)] text-xs text-[var(--charcoal)]/30">
+        <p className="font-[family-name:var(--font-cormorant)] text-xs" style={{ color: "var(--text)", opacity: 0.3 }}>
           &
         </p>
-        <p className="font-[family-name:var(--font-lora)] text-sm text-[var(--charcoal)]/80">
+        <p className="font-[family-name:var(--font-lora)] text-sm" style={{ color: "var(--text)", opacity: 0.8 }}>
           {person.mother}
         </p>
       </motion.div>
@@ -88,7 +91,8 @@ function PersonCard({ person, index }: { person: PersonInfo; index: number }) {
         href={`https://instagram.com/${person.instagram.replace("@", "")}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 inline-flex items-center gap-1.5 font-[family-name:var(--font-cormorant)] text-sm text-[var(--gold)] hover:text-[var(--gold-dark)] transition-colors"
+        className="mt-4 inline-flex items-center gap-1.5 font-[family-name:var(--font-cormorant)] text-sm transition-colors"
+        style={{ color: "var(--primary)" }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: index * 0.3 + 0.8 }}
@@ -111,7 +115,7 @@ export default function CoupleSection({
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="relative py-28 bg-[var(--cream)]">
+    <section ref={ref} className="relative py-28" style={{ backgroundColor: "var(--bg-alt)" }}>
       <div className="mx-auto max-w-4xl px-6">
         <motion.div
           className="mb-20 text-center"
@@ -119,14 +123,11 @@ export default function CoupleSection({
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="font-[family-name:var(--font-cormorant)] text-sm tracking-[0.4em] uppercase text-[var(--sage)]">
+          <p className="font-[family-name:var(--font-cormorant)] text-sm tracking-[0.4em] uppercase" style={{ color: "var(--secondary)" }}>
             Mempelai
           </p>
           <div className="ornament-divider mt-4">
-            <Heart
-              className="h-4 w-4 text-[var(--gold)]"
-              fill="var(--gold)"
-            />
+            <Heart className="h-4 w-4" style={{ color: "var(--primary)", fill: "var(--primary)" }} />
           </div>
         </motion.div>
 

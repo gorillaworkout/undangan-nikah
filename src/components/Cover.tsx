@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import dynamic from "next/dynamic";
+import { config } from "@/config/wedding";
 
 const Scene3D = dynamic(() => import("./Scene3D"), { ssr: false });
 
@@ -32,16 +33,14 @@ export default function Cover({
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
       style={{
-        background:
-          "linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 30%, #2c2c2c 60%, #1a1a1a 100%)",
+        background: `linear-gradient(180deg, var(--cover-bg) 0%, var(--cover-bg-mid) 30%, var(--cover-bg-mid) 60%, var(--cover-bg) 100%)`,
       }}
       exit={{
         y: "-100%",
         transition: { duration: 1, ease: [0.65, 0, 0.35, 1] },
       }}
     >
-      {/* 3D Background */}
-      <Scene3D variant="cover" />
+      {config.features.threeD && <Scene3D variant="cover" />}
 
       {/* Decorative corner ornaments */}
       <div className="pointer-events-none absolute inset-0">
@@ -53,7 +52,8 @@ export default function Cover({
         ].map((pos, i) => (
           <svg
             key={i}
-            className={`absolute ${pos} h-20 w-20 sm:h-28 sm:w-28 text-[var(--gold-light)] opacity-20`}
+            className={`absolute ${pos} h-20 w-20 sm:h-28 sm:w-28 opacity-20`}
+            style={{ color: "var(--primary-light)" }}
             viewBox="0 0 100 100"
             fill="none"
             stroke="currentColor"
@@ -74,16 +74,18 @@ export default function Cover({
         transition={{ duration: 1, delay: 0.3 }}
       >
         <motion.p
-          className="font-[family-name:var(--font-cormorant)] text-xs sm:text-sm tracking-[0.5em] uppercase text-[var(--gold-light)]/80"
+          className="font-[family-name:var(--font-cormorant)] text-xs sm:text-sm tracking-[0.5em] uppercase"
+          style={{ color: "var(--primary-light)", opacity: 0.8 }}
           initial={{ opacity: 0, letterSpacing: "0.2em" }}
-          animate={{ opacity: 1, letterSpacing: "0.5em" }}
+          animate={{ opacity: 0.8, letterSpacing: "0.5em" }}
           transition={{ delay: 0.5, duration: 1 }}
         >
           The Wedding of
         </motion.p>
 
         <motion.h1
-          className="font-[family-name:var(--font-playfair)] mt-6 text-5xl sm:text-8xl text-white italic"
+          className="font-[family-name:var(--font-playfair)] mt-6 text-5xl sm:text-8xl italic"
+          style={{ color: "var(--cover-text)" }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
@@ -97,7 +99,8 @@ export default function Cover({
             {groomName}
           </motion.span>
           <motion.span
-            className="block text-3xl sm:text-5xl text-[var(--gold-light)] my-2 sm:my-3 not-italic font-[family-name:var(--font-cormorant)] font-light"
+            className="block text-3xl sm:text-5xl my-2 sm:my-3 not-italic font-[family-name:var(--font-cormorant)] font-light"
+            style={{ color: "var(--primary-light)" }}
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 1.3, duration: 0.6, type: "spring" }}
@@ -115,7 +118,8 @@ export default function Cover({
         </motion.h1>
 
         <motion.p
-          className="font-[family-name:var(--font-lora)] mt-6 text-sm text-gray-400"
+          className="font-[family-name:var(--font-lora)] mt-6 text-sm"
+          style={{ color: "var(--text-light)" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
@@ -129,18 +133,35 @@ export default function Cover({
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
         >
-          <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-[var(--gold-light)]/40 to-transparent" />
-          <p className="font-[family-name:var(--font-cormorant)] mt-6 text-xs tracking-[0.3em] uppercase text-gray-500">
+          <div
+            className="mx-auto h-px w-32"
+            style={{
+              background: `linear-gradient(to right, transparent, var(--primary-light), transparent)`,
+              opacity: 0.4,
+            }}
+          />
+          <p
+            className="font-[family-name:var(--font-cormorant)] mt-6 text-xs tracking-[0.3em] uppercase"
+            style={{ color: "var(--text-light)" }}
+          >
             Kepada Yth. Bapak/Ibu/Saudara/i
           </p>
-          <p className="font-[family-name:var(--font-playfair)] mt-2 text-2xl sm:text-3xl text-white">
+          <p
+            className="font-[family-name:var(--font-playfair)] mt-2 text-2xl sm:text-3xl"
+            style={{ color: "var(--cover-text)" }}
+          >
             {guestName}
           </p>
         </motion.div>
 
         <motion.button
           onClick={onOpen}
-          className="group mt-10 sm:mt-14 inline-flex items-center gap-3 rounded-full border border-[var(--gold-light)]/60 bg-[var(--gold-light)]/5 px-10 py-4 font-[family-name:var(--font-cormorant)] text-sm tracking-[0.25em] uppercase text-[var(--gold-light)] backdrop-blur-sm transition-all hover:border-[var(--gold-light)] hover:bg-[var(--gold-light)]/20 hover:shadow-[0_0_30px_rgba(212,168,67,0.2)]"
+          className="group mt-10 sm:mt-14 inline-flex items-center gap-3 rounded-full px-10 py-4 font-[family-name:var(--font-cormorant)] text-sm tracking-[0.25em] uppercase backdrop-blur-sm transition-all"
+          style={{
+            border: `1px solid color-mix(in srgb, var(--primary-light) 60%, transparent)`,
+            color: "var(--primary-light)",
+            background: `color-mix(in srgb, var(--primary-light) 5%, transparent)`,
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.2 }}

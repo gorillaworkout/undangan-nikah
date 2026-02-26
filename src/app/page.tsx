@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { config } from "@/config/wedding";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import Cover from "@/components/Cover";
 import HeroSection from "@/components/HeroSection";
 import QuoteSection from "@/components/QuoteSection";
@@ -28,59 +29,66 @@ export default function Home() {
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
-    // Scroll to top when opening
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   return (
-    <main className="relative min-h-screen">
-      <AnimatePresence mode="wait">
-        {!isOpen && (
-          <Cover
-            key="cover"
-            groomName={config.groom.name}
-            brideName={config.bride.name}
-            guestName={guestName}
-            date={config.akad.date}
-            onOpen={handleOpen}
-          />
+    <ThemeProvider>
+      <main className="relative min-h-screen">
+        <AnimatePresence mode="wait">
+          {!isOpen && (
+            <Cover
+              key="cover"
+              groomName={config.groom.name}
+              brideName={config.bride.name}
+              guestName={guestName}
+              date={config.akad.date}
+              onOpen={handleOpen}
+            />
+          )}
+        </AnimatePresence>
+
+        {isOpen && (
+          <>
+            {config.features.music && <MusicPlayer src={config.music.src} />}
+            {config.features.particles && <Particles />}
+
+            <HeroSection
+              groomName={config.groom.name}
+              brideName={config.bride.name}
+              date={config.akad.date}
+            />
+
+            <QuoteSection quotes={config.quotes} />
+
+            <CoupleSection groom={config.groom} bride={config.bride} />
+
+            <EventSection akad={config.akad} resepsi={config.resepsi} />
+
+            {config.features.countdown && (
+              <CountdownSection date={config.akad.date} />
+            )}
+
+            {config.features.gallery && (
+              <GallerySection images={config.gallery} />
+            )}
+
+            {config.features.gifts && <GiftSection gifts={config.gifts} />}
+
+            {config.features.rsvp && (
+              <RSVPSection
+                groomName={config.groom.name}
+                brideName={config.bride.name}
+              />
+            )}
+
+            <FooterSection
+              hashtag={config.hashtag}
+              footerText={config.footerText}
+            />
+          </>
         )}
-      </AnimatePresence>
-
-      {isOpen && (
-        <>
-          <MusicPlayer src={config.music.src} />
-          <Particles />
-
-          <HeroSection
-            groomName={config.groom.name}
-            brideName={config.bride.name}
-            date={config.akad.date}
-          />
-
-          <QuoteSection quotes={config.quotes} />
-
-          <CoupleSection groom={config.groom} bride={config.bride} />
-
-          <EventSection akad={config.akad} resepsi={config.resepsi} />
-
-          <CountdownSection date={config.akad.date} />
-
-          <GallerySection images={config.gallery} />
-
-          <GiftSection gifts={config.gifts} />
-
-          <RSVPSection
-            groomName={config.groom.name}
-            brideName={config.bride.name}
-          />
-
-          <FooterSection
-            hashtag={config.hashtag}
-            footerText={config.footerText}
-          />
-        </>
-      )}
-    </main>
+      </main>
+    </ThemeProvider>
   );
 }

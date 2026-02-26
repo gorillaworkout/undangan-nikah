@@ -14,7 +14,7 @@ export default function QuoteSection({ quotes }: { quotes: Quote[] }) {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="relative py-24 bg-[var(--warm-white)]">
+    <section ref={ref} className="relative py-24" style={{ backgroundColor: "var(--bg)" }}>
       <div className="mx-auto max-w-2xl px-6 text-center">
         {quotes.map((quote, index) => (
           <motion.div
@@ -23,13 +23,13 @@ export default function QuoteSection({ quotes }: { quotes: Quote[] }) {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: index * 0.2 }}
           >
-            <span className="font-[family-name:var(--font-playfair)] text-6xl text-[var(--gold-light)] opacity-30">
+            <span className="font-[family-name:var(--font-playfair)] text-6xl opacity-30" style={{ color: "var(--primary-light)" }}>
               ❝
             </span>
-            <p className="font-[family-name:var(--font-cormorant)] -mt-6 text-xl leading-relaxed text-[var(--charcoal)]/80 italic">
+            <p className="font-[family-name:var(--font-cormorant)] -mt-6 text-xl leading-relaxed italic" style={{ color: "var(--text)", opacity: 0.8 }}>
               {quote.text}
             </p>
-            <p className="font-[family-name:var(--font-lora)] mt-4 text-sm text-[var(--gold)]">
+            <p className="font-[family-name:var(--font-lora)] mt-4 text-sm" style={{ color: "var(--primary)" }}>
               — {quote.source}
             </p>
           </motion.div>

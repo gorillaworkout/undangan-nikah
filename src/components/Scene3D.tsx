@@ -4,6 +4,9 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
+import { getTheme } from "@/config/wedding";
+
+const theme = getTheme();
 
 function GoldRing({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) {
   const ref = useRef<THREE.Mesh>(null);
@@ -21,10 +24,10 @@ function GoldRing({ position, scale = 1 }: { position: [number, number, number];
     <mesh ref={ref} position={position} scale={scale}>
       <torusGeometry args={[1, 0.08, 16, 48]} />
       <meshStandardMaterial
-        color="#D4A843"
+        color={theme.primaryLight}
         metalness={0.9}
         roughness={0.1}
-        emissive="#B8860B"
+        emissive={theme.primary}
         emissiveIntensity={0.2}
       />
     </mesh>
@@ -58,10 +61,10 @@ function FloatingHeart({ position, scale = 1 }: { position: [number, number, num
     <mesh ref={ref} position={position} scale={scale * 0.15} rotation={[Math.PI, 0, 0]}>
       <extrudeGeometry args={[heartShape, { depth: 0.3, bevelEnabled: true, bevelSegments: 3, bevelSize: 0.05, bevelThickness: 0.05 }]} />
       <meshStandardMaterial
-        color="#D4A843"
+        color={theme.primaryLight}
         metalness={0.8}
         roughness={0.2}
-        emissive="#B8860B"
+        emissive={theme.primary}
         emissiveIntensity={0.15}
       />
     </mesh>
@@ -74,7 +77,7 @@ function GoldSphere({ position }: { position: [number, number, number] }) {
       <mesh position={position} scale={0.3}>
         <sphereGeometry args={[1, 32, 32]} />
         <MeshDistortMaterial
-          color="#D4A843"
+          color={theme.primaryLight}
           metalness={0.9}
           roughness={0.1}
           distort={0.3}
@@ -99,6 +102,12 @@ function GoldParticles() {
     return pos;
   }, []);
 
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    return geo;
+  }, [positions]);
+
   useFrame((state) => {
     if (!ref.current) return;
     ref.current.rotation.y = state.clock.elapsedTime * 0.02;
@@ -111,17 +120,11 @@ function GoldParticles() {
     ref.current.geometry.attributes.position.needsUpdate = true;
   });
 
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    return geo;
-  }, [positions]);
-
   return (
     <points ref={ref} geometry={geometry}>
       <pointsMaterial
         size={0.04}
-        color="#D4A843"
+        color={theme.particle}
         transparent
         opacity={0.6}
         sizeAttenuation
@@ -141,7 +144,7 @@ export default function Scene3D({ variant = "cover" }: { variant?: "cover" | "he
       >
         <ambientLight intensity={0.4} />
         <directionalLight position={[5, 5, 5]} intensity={0.8} color="#FFF5E1" />
-        <pointLight position={[-3, 2, 4]} intensity={0.5} color="#D4A843" />
+        <pointLight position={[-3, 2, 4]} intensity={0.5} color={theme.primaryLight} />
 
         {variant === "cover" && (
           <>

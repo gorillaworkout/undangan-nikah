@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --gold: #B8860B;
-  --gold-light: #D4A843;
-  --gold-dark: #8B6914;
-  --cream: #FAF3E0;
-  --cream-dark: #F0E6CC;
-  --sage: #7C8C6E;
-  --sage-light: #9AAB8C;
-  --charcoal: #2C2C2C;
-  --warm-white: #FEFCF6;
+  /* Default fallback — overridden by ThemeProvider */
+  --primary: #B8860B;
+  --primary-light: #D4A843;
+  --primary-dark: #8B6914;
+  --secondary: #7C8C6E;
+  --secondary-light: #9AAB8C;
+  --bg: #FEFCF6;
+  --bg-alt: #FAF3E0;
+  --bg-dark: #F0E6CC;
+  --text: #2C2C2C;
+  --text-light: #666666;
+  --cover-bg: #0a0a0a;
+  --cover-bg-mid: #1a1a1a;
+  --cover-text: #FFFFFF;
+  --particle: #D4A843;
 }
 
 html {
@@ -17,8 +23,8 @@ html {
 }
 
 body {
-  background-color: var(--warm-white);
-  color: var(--charcoal);
+  background-color: var(--bg);
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -28,11 +34,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--cream);
+  background: var(--bg-alt);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gold-light);
+  background: var(--primary-light);
   border-radius: 3px;
 }
 
@@ -51,7 +57,7 @@ body {
   width: 60px;
   background: linear-gradient(
     to var(--direction, right),
-    var(--gold-light),
+    var(--primary-light),
     transparent
   );
 }
@@ -89,28 +95,14 @@ body {
   animation: float linear infinite;
 }
 
-/* Cover slide up */
-@keyframes slideUp {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-100%);
-  }
-}
-
-.cover-exit {
-  animation: slideUp 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
 /* Countdown glow */
 .countdown-box {
   background: linear-gradient(
     135deg,
-    rgba(184, 134, 11, 0.1),
-    rgba(184, 134, 11, 0.05)
+    color-mix(in srgb, var(--primary) 10%, transparent),
+    color-mix(in srgb, var(--primary) 5%, transparent)
   );
-  border: 1px solid rgba(184, 134, 11, 0.2);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -140,6 +132,6 @@ body {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 2px solid var(--gold-light);
+  border: 2px solid var(--primary-light);
   animation: pulse-ring 2s ease-out infinite;
 }

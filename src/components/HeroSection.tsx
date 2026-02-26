@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import dynamic from "next/dynamic";
+import { config } from "@/config/wedding";
 
 const Scene3D = dynamic(() => import("./Scene3D"), { ssr: false });
 
@@ -20,15 +21,17 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
   });
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--cream)]">
-      {/* 3D floating elements */}
-      <Scene3D variant="hero" />
+    <section
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      style={{ backgroundColor: "var(--bg-alt)" }}
+    >
+      {config.features.threeD && <Scene3D variant="hero" />}
 
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B8860B'%3E%3Cpath d='M40 0l40 40-40 40L0 40z' fill-opacity='.06'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23888'%3E%3Cpath d='M40 0l40 40-40 40L0 40z' fill-opacity='.06'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}
       />
 
@@ -39,7 +42,8 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
           transition={{ duration: 1 }}
         >
           <motion.p
-            className="font-[family-name:var(--font-cormorant)] text-base sm:text-lg text-[var(--sage)] leading-relaxed"
+            className="font-[family-name:var(--font-cormorant)] text-base sm:text-lg leading-relaxed"
+            style={{ color: "var(--secondary)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -48,22 +52,24 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
           </motion.p>
 
           <div className="ornament-divider my-6">
-            <span className="text-[var(--gold)]">✦</span>
+            <span style={{ color: "var(--primary)" }}>✦</span>
           </div>
 
           <motion.p
-            className="font-[family-name:var(--font-cormorant)] text-lg sm:text-xl text-[var(--charcoal)]/70"
+            className="font-[family-name:var(--font-cormorant)] text-lg sm:text-xl"
+            style={{ color: "var(--text)", opacity: 0.7 }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.7 }}
             transition={{ delay: 0.5 }}
           >
             Assalamualaikum Warahmatullahi Wabarakatuh
           </motion.p>
 
           <motion.p
-            className="font-[family-name:var(--font-lora)] mt-4 max-w-md mx-auto text-sm text-[var(--charcoal)]/50 leading-relaxed"
+            className="font-[family-name:var(--font-lora)] mt-4 max-w-md mx-auto text-sm leading-relaxed"
+            style={{ color: "var(--text)", opacity: 0.5 }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 0.5 }}
             transition={{ delay: 0.7 }}
           >
             Dengan memohon rahmat dan ridho Allah SWT, kami mengundang
@@ -72,7 +78,8 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
 
           <div className="mt-12 sm:mt-16">
             <motion.h1
-              className="font-[family-name:var(--font-playfair)] text-5xl sm:text-8xl text-[var(--charcoal)] italic leading-tight"
+              className="font-[family-name:var(--font-playfair)] text-5xl sm:text-8xl italic leading-tight"
+              style={{ color: "var(--text)" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 1 }}
@@ -86,7 +93,8 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
                 {groomName}
               </motion.span>
               <motion.span
-                className="block text-3xl sm:text-5xl text-[var(--gold)] my-2 sm:my-4 not-italic font-[family-name:var(--font-cormorant)] font-light"
+                className="block text-3xl sm:text-5xl my-2 sm:my-4 not-italic font-[family-name:var(--font-cormorant)] font-light"
+                style={{ color: "var(--primary)" }}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1.2, type: "spring" }}
@@ -110,8 +118,16 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5 }}
           >
-            <div className="mx-auto h-px w-24 bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent" />
-            <p className="font-[family-name:var(--font-cormorant)] mt-4 text-lg sm:text-xl text-[var(--gold)]">
+            <div
+              className="mx-auto h-px w-24"
+              style={{
+                background: `linear-gradient(to right, transparent, var(--primary), transparent)`,
+              }}
+            />
+            <p
+              className="font-[family-name:var(--font-cormorant)] mt-4 text-lg sm:text-xl"
+              style={{ color: "var(--primary)" }}
+            >
               {formattedDate}
             </p>
           </motion.div>
@@ -122,7 +138,10 @@ export default function HeroSection({ groomName, brideName, date }: HeroProps) {
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="h-6 w-6 text-[var(--gold-light)] opacity-60" />
+          <ChevronDown
+            className="h-6 w-6 opacity-60"
+            style={{ color: "var(--primary-light)" }}
+          />
         </motion.div>
       </div>
     </section>
